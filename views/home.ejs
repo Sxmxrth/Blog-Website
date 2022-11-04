@@ -5,6 +5,6 @@
 
 <% posts.forEach(function(set){ %>
   <h1><%= set.title %></h1>
-  <p><%= set.content %></p>
+  <p><%= set.content.substring(0,100) + "..." %> <a href="/posts/<%= set.title %>">Read more</a></p>
   <% }) %> <%- include("partials/footer") -%>
 </posts.length;>

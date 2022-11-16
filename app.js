@@ -83,14 +83,16 @@ app.post("/compose", function(req, res){
 })
 
 app.get("/posts/:postTitle", function(req, res){
-  posts.forEach(function(post){
-    if(_.lowerCase(post.title) === _.lowerCase(req.params.postTitle)){
-
+  console.log(req.params.postTitle);
+  entry.find({ title : req.params.postTitle }, function(err, docs){
+    if(err){
+      console.log(err);
+    }else{
+      console.log(docs[0].title);
       res.render("post", {
-        title : post.title,
-        content : post.content
+        title : docs[0].title,
+        content : docs[0].content
       })
-
     }
   })
 

@@ -15,8 +15,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-let posts = [];
-
 mongoose.connect("mongodb://0.0.0.0:27017/blogwebsite", { useNewUrlParser : true} )
 
 const itemSchema = new mongoose.Schema({
@@ -25,7 +23,6 @@ const itemSchema = new mongoose.Schema({
 })
 
 const entry = mongoose.model("Entry", itemSchema);
-
 
 app.get("/", function(req, res){
 
@@ -97,8 +94,6 @@ app.get("/posts/:postTitle", function(req, res){
   })
 
 })
-
-
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");

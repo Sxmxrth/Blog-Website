@@ -29,11 +29,19 @@ const entry = mongoose.model("Entry", itemSchema);
 
 app.get("/", function(req, res){
 
-  res.render("home", {
-    homeStartingContent : homeStartingContent,
-    posts : posts
-  });
-  
+  entry.find(function(err, entries){
+    if(err){
+      console.log(err);
+    }else{
+      res.render("home", {
+
+        homeStartingContent : homeStartingContent,
+        posts : entries
+      
+      });
+    }
+  })
+
 })
 
 app.get("/about", function(req, res){
@@ -60,12 +68,15 @@ app.get("/compose", function(req, res){
 
 app.post("/compose", function(req, res){
   
-  let post = {
-    title : req.body.title,
-    content : req.body.postBody
-  }
+  const title = req.body.title;
+  const content = req.body.postBody;
 
-  posts.push(post);
+  const entries = new entry({
+    title : title,
+    content : content
+  })
+
+  entries.save();
 
   res.redirect("/");
 

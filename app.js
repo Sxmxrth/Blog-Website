@@ -22,24 +22,22 @@ const itemSchema = new mongoose.Schema({
   content : String
 })
 
-const entry = mongoose.model("Entry", itemSchema);
+const entry = mongoose.model("entry", itemSchema);
 
 app.get("/", function(req, res){
 
-  entry.find(function(err, entries){
-    if(err){
-      console.log(err);
-    }else{
+  entry.find({}, function(err, entries){
+    
       res.render("home", {
 
         homeStartingContent : homeStartingContent,
         posts : entries
       
       });
-    }
-  })
+    
+  });
 
-})
+});
 
 app.get("/about", function(req, res){
 
@@ -79,21 +77,18 @@ app.post("/compose", function(req, res){
 
 })
 
-app.get("/posts/:postTitle", function(req, res){
-  console.log(req.params.postTitle);
-  entry.find({ title : req.params.postTitle }, function(err, docs){
-    if(err){
-      console.log(err);
-    }else{
-      console.log(docs[0].title);
-      res.render("post", {
-        title : docs[0].title,
-        content : docs[0].content
-      })
-    }
-  })
+app.get("/posts/:postId", function(req, res){
 
-})
+  const requestedPostId = req.params.postId;
+  
+    entry.findOne({_id: requestedPostId}, function(err, post){
+      res.render("post", {
+        title: post.title,
+        content: post.content
+      });
+    });
+  
+  });
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
